@@ -11,9 +11,16 @@
 <title>Profile</title>
 </head>
 <body>
-<table>
+<jsp:include page="navbar.jsp"></jsp:include>
+
+<c:if test="${editProfile==null}">
+<h1>the session doesn't exist</h1>
+</c:if>
+
+
 <c:choose>
     <c:when test="${editProfile==false}">
+<table border="1">
 <tr><td>Name:</td><td><c:out value="${user.username}"/></td></tr>
 <tr><td>Email:</td><td><c:out value="${user.email}"/></td></tr>
 <tr><td>Motto: </td><td><c:out value="${user.motto}"/></td></tr>
@@ -21,7 +28,7 @@
     </c:when>
     <c:when test="${editProfile==true}">
 <form action="UpdateUser" method="post">
-<table>
+<table border="1">
 <tr><td>Name:</td><td><input type="text" value="<c:out value="${user.username}"/>"></td></tr>
 <tr><td>Email:</td><td><input type="text" value="<c:out value="${user.email}"/>"></td></tr>
 <tr><td>Motto: </td><td><input type="text" value="<c:out value="${user.motto}"/>"></td></tr>

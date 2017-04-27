@@ -11,16 +11,12 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class RedirectServlet
  */
-@WebServlet("/GoToOutput")
-public class RedirectServlet extends HttpServlet {
+@WebServlet("/LoginServlet")
+public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public RedirectServlet() {
+
+    public LoginServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
@@ -41,7 +37,7 @@ public class RedirectServlet extends HttpServlet {
 		//add the user to the session
 		HttpSession session = request.getSession();
 		session.setAttribute("user", u);
-				
+		session.setAttribute("editProfile", true);		
 		//redirect to next page as indicated by the value of the nextURL variable
 		response.sendRedirect(request.getContextPath() + nextPage);
 	}

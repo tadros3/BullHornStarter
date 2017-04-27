@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-login
-<a href="GoToOutput?nextPage=output.jsp">Go to output.jsp using servlet</a>
+login<br>
+<a href="LoginServlet?nextPage=output.jsp">Go to output.jsp using servlet</a>
 </body>
 </html>

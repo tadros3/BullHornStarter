@@ -8,9 +8,5 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp"></jsp:include>
-
-<h1>${message}</h1>
-<h2>${user.getMotto()}</h2>
-<a href="profile.jsp">View Profile</a>
 </body>
 </html>
