@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,9 +8,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import customTools.DbUser;
-import model.Bhuser;
 
 @WebServlet("/ProfileServlet")
 public class ProfileServlet extends HttpServlet {
@@ -36,9 +31,8 @@ public class ProfileServlet extends HttpServlet {
 		String nextURL = "/error.jsp";
 		int userid = 0;
 		String action = "";
-		Bhuser profileUser = null;
-		Bhuser loggedInUser = null;
 		
+	
 		//get user out of session. If they don't exist then send them back to the login page.
 		//kill the session while you're at it.
 		if (session.getAttribute("user")==null){
@@ -46,31 +40,26 @@ public class ProfileServlet extends HttpServlet {
 			nextURL = "/login.jsp";
 			session.invalidate();
 			response.sendRedirect(request.getContextPath() + nextURL);
-		    return;//return prevents an error
+		    return;//return prevents an error; Don't believe me? Take it out.
 		}
-		
 		
 		try{
 		userid = Integer.parseInt(request.getParameter("userid"));
-		action = request.getParameter("action");
-		
-		
+		action = request.getParameter("action");//action is a hidden input on the form that gives us information
+			
 		//update profile for user in request variable if action = updateprofile
 		if (request.getParameter("action").equals("updateprofile")){
 			int uid = Integer.parseInt(request.getParameter("userid"));
 			String userEmail = request.getParameter("useremail");
 			String userMotto = request.getParameter("usermotto");
-			Bhuser updateUser = DbUser.getUser(uid);
+			User updateUser = DbUser.getUserById(uid);
 			updateUser.setMotto(userMotto);
-			updateUser.setUseremail(userEmail);
+			updateUser.setEmail(userEmail);
 			DbUser.update(updateUser);
 		}
 		
-		
-		
-		
 		//get the user from the parameter
-		profileUser = DbUser.getUser(userid);
+		profileUser = DbUser.getUserByEmail(userEmail);
     	//get the current user out of the session
 		loggedInUser = (Bhuser) session.getAttribute("user");		
 		

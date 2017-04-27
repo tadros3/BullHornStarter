@@ -25,18 +25,10 @@ public class LoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//String nextPage=request.getParameter("nextpage");
 		String nextPage = "/Home";//go to home servlet next
-		
-		
-		//first create a user object
-		User u = new User();
-		u.username = "Bart Simpson";
-		u.email = "bart@fox.net";
-		u.password = "blue123";
-		u.motto = "Don't have a cow, man!";
-		
+
 		//add the user to the session
 		HttpSession session = request.getSession();
-		session.setAttribute("user", u);
+		session.setAttribute("user", DbUser.getUserById(userID));
 		session.setAttribute("editProfile", true);		
 		//redirect to next page as indicated by the value of the nextURL variable
 		response.sendRedirect(request.getContextPath() + nextPage);
