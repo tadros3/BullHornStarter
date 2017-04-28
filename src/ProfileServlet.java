@@ -21,12 +21,7 @@ public class ProfileServlet extends HttpServlet {
     	doPost(request,response);
     }
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		/*
-		 * simplify this so that it always requires two parameters, userid and action
-		 * action is view or edit. If edit then the userID of the session(user) must be same as userID for profile
-		 * since you can only edit your own.
-		 * all urls coming to this page must contain both parameters or get error.
-		 */
+
 		HttpSession session = request.getSession();
 		String nextURL = "/error.jsp";
 		int userid = 0;
@@ -46,6 +41,12 @@ public class ProfileServlet extends HttpServlet {
 		}
 		
 		try{
+		/*
+		 * simplify this so that it always requires two parameters, userid and action
+		 * action is view or edit. If edit then the userID of the session(user) must be same as userID for profile
+		 * since you can only edit your own.
+		 * all urls coming to this page must contain both parameters or get error.
+		 */			
 		userid = Integer.parseInt(request.getParameter("userid"));
 		action = request.getParameter("action");//action is a hidden input on the form that gives us information
 			

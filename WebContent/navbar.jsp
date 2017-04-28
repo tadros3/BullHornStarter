@@ -1,4 +1,5 @@
 <!-- start navbar here -->
+<h1><img src="images/bullhornlogo50x50.png" alt="Bullhorn Logo"/>&nbsp;Bullhorn!</h1>
 <ul>
 <li><a href="home.jsp">Home</a></li>
 <li><a href="newsfeed.jsp">Newsfeed</a></li>

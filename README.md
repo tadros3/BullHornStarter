@@ -15,7 +15,10 @@ To get the application working again simply copy each line of code below back to
 
 ### Review
 #### By now you should have the application working again. Answer the following questions:
-1. what is the action of the login form
+what is the action of the login form?
+right-click on LoginServlet and select Run as. You should see the error page. Do you know why?
+Now, right-click on the login.jsp and select Run as. You will see the login page. 
+The title on every page is different. What are some ways you could use to make the title consistent on every page? Think about what would happen if you wanted to change the title on every page. How would you modify your application to allow you to change the title in only one place?
 2. is the data for the login form sent through the url or embedded in the form object that is sent to the web server?
 3. what is the name of the web server we are using?
 4. when the data is sent to the web server what does the web server do next?

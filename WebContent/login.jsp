@@ -4,10 +4,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Welcome to Bullhorn</title>
 </head>
 <body>
-login<br>
-<a href="LoginServlet?nextPage=output.jsp">Go to output.jsp using servlet</a>
+<h1>Login Page</h1>
+
+<form action="LoginServlet" method="post">
+	Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="email"><br/>
+	Password:&nbsp;<input type="password" name="password"><br/>
+	<input type="hidden" name="action" value="login">
+	<input type="submit" value="Log In">
+</form>
+<p/>
+<a href="LoginServlet">Go directly to login servlet without logging in</a>
 </body>
 </html>
