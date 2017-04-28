@@ -14,10 +14,14 @@ To get the application working again simply copy each line of code below back to
 
 
 ### Review
-By now you should have the application working again. Answer the following questions:
+#### By now you should have the application working again. Answer the following questions:
 1. what is the action of the login form
-2. is the data for the login form sent through the url or embedded in the form object that is sent to the web server
+2. is the data for the login form sent through the url or embedded in the form object that is sent to the web server?
 3. what is the name of the web server we are using?
 4. when the data is sent to the web server what does the web server do next?
 5. when is the data sent to the web server?
-6. 
+6. what data is sent to the web server?
+7. write down the different methods that are executed (in order) once the user clicks "Login"
+8. when using JSTL (the Java Standard Tag Library) which page directive must you include at the top of the JSP page?
+9. modify this application to add another JSP for adding a new user. Create the JSP, name it adduser.jsp. Add it to the login page. That way if a user finds the login page but hasn't joined the site they would click on the "New User" link and go to the adduser.jsp. When adduser.jsp opens the user will see a form prompting for their username, email, password and motto. Don't worry about making the form work yet. We'll get to that later.
+10. Make the addUser.jsp work. Since we haven't added the database to the site yet you only have to create a servlet to receive the data for addUser.jsp. You should be able to do that by now. Use login.jsp to motivate you.

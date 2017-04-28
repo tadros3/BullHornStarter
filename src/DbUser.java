@@ -41,4 +41,9 @@ public class DbUser {
 		return u;
 
 	}
+	public static boolean updateUser(User u){
+		//this method would update the user in the database
+		//and return true if successful, false otherwise
+		return true;
+	}
 }

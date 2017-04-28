@@ -31,7 +31,9 @@ public class ProfileServlet extends HttpServlet {
 		String nextURL = "/error.jsp";
 		int userid = 0;
 		String action = "";
-		
+		//create variables to hold the user who is logged in and the user for whom we are requesting a profile
+		User loggedInUser = null;
+		User profileUser = null;
 	
 		//get user out of session. If they don't exist then send them back to the login page.
 		//kill the session while you're at it.
@@ -55,15 +57,15 @@ public class ProfileServlet extends HttpServlet {
 			User updateUser = DbUser.getUserById(uid);
 			updateUser.setMotto(userMotto);
 			updateUser.setEmail(userEmail);
-			DbUser.update(updateUser);
+			DbUser.updateUser(updateUser);
 		}
 		
 		//get the user from the parameter
 		profileUser = DbUser.getUserByEmail(userEmail);
     	//get the current user out of the session
-		loggedInUser = (Bhuser) session.getAttribute("user");		
+		loggedInUser = (User) session.getAttribute("user");		
 		
-		if (profileUser.getBhuserid()==loggedInUser.getBhuserid()){
+		if (profileUser.getUserId()==loggedInUser.getUserId()){
 			//display profile as form
 			//the session variable editProfile is used by the JSP to
 			//display the profile in edit mode
@@ -78,10 +80,10 @@ public class ProfileServlet extends HttpServlet {
 	    //populate the data in the attributes
 		int imgSize = 120;
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
-		String joindate = sdf.format(profileUser.getJoindate());
-		request.setAttribute("userid", profileUser.getBhuserid());
+		String joindate = sdf.format(profileUser.getJoinDate());
+		request.setAttribute("userid", profileUser.getUserId());
 		request.setAttribute("username", profileUser.getUsername());
-		request.setAttribute("useremail", profileUser.getUseremail());
+		request.setAttribute("useremail", profileUser.getEmail());
 		request.setAttribute("usermotto", profileUser.getMotto());
 		request.setAttribute("userjoindate", joindate);
 		nextURL = "/profile.jsp";
