@@ -6,5 +6,6 @@
 <li><a href="profile.jsp">Profile</a></li>
 <li><a href="search.jsp">Search</a></li>
 <li><a href="feedback.jsp">Feedback</a></li>
+<li><a href="LoginServlet?action=logout">Log out</a></li>
 </ul>
 <!-- end navbar here -->

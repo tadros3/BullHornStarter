@@ -68,6 +68,15 @@ public class LoginServlet extends HttpServlet {
 			nextPage = "/login.jsp";
 		}
 		
+		//so you got this far, eh?....
+		//did they click the logout link?
+		if (request.getParameter("action").toString().equals("logout")){
+			//kill the session .... they won't be using it anymore
+			session.invalidate();
+			//Go back to Go. Do not collect $200.00.
+			nextPage = "/login.jsp";
+		}
+		
 		//Your work here is done. Redirect to next page as indicated by the value of the nextURL variable
 		response.sendRedirect(request.getContextPath() + nextPage);
 	}

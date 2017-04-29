@@ -18,7 +18,6 @@
 		<h1>the session doesn't exist</h1>
 	</c:if>
 
-
 	<c:choose>
 		<c:when test="${editProfile==false}">
 			<table border="1">
@@ -28,11 +27,11 @@
 				</tr>
 				<tr>
 					<td>Email:</td>
-					<td><c:out value="${email}" /></td>
+					<td><c:out value="${useremail}" /></td>
 				</tr>
 				<tr>
 					<td>Motto:</td>
-					<td><c:out value="${motto}" /></td>
+					<td><c:out value="${usermotto}" /></td>
 				</tr>
 			</table>
 		</c:when>
