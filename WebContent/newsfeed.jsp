@@ -8,5 +8,22 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp"></jsp:include>
+<h1>this is the newsfeed page</h1>
+<!-- I've hard coded one tweet here to show you what it might look like -->
+<table>
+<!-- each html table row starts with tr, each cell starts with td -->
+<tr>
+<td><a href="ProfileServlet?userid=101&action=viewProfile">lisa@fox.net</a></td>
+<td>This is the text of Lisa's tweet</td>
+</tr>
+<tr>
+<td><a href="ProfileServlet?userid=102&action=viewProfile">homer@fox.net</a></td>
+<td>This is the text of Homer's tweet</td>
+</tr>
+<tr>
+<td><a href="ProfileServlet?userid=100&action=viewProfile">bart@fox.net</a></td>
+<td>This is the text of Bart's tweet</td>
+</tr>
+</table>
 </body>
 </html>

@@ -1,4 +1,4 @@
-import java.sql.Date;
+import java.util.Date;
 
 public class User {
 	long userId;
@@ -6,7 +6,6 @@ public class User {
 	String password;
 	String email;
 	String motto;
-	Date joinDate;
 	
 	public User(){
 		
@@ -41,12 +40,6 @@ public class User {
 	}
 	public void setMotto(String motto) {
 		this.motto = motto;
-	}
-	public java.sql.Date getJoinDate(){
-		return joinDate;
-	}
-	public void setJoinDate(java.sql.Date date){
-		joinDate = date;
 	}
 	public boolean isValidUser(String email){
 		//this method should go to the database and query

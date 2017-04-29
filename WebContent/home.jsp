@@ -8,7 +8,7 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp"></jsp:include>
-
+<h1>this is the home page</h1>
 <h1>${message}</h1>
 <h1>Welcome, ${user.getUsername()}</h1>
 <h2>${user.getMotto()}</h2>

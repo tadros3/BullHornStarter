@@ -8,11 +8,8 @@
 </head>
 <body>
 <jsp:include page="navbar.jsp"></jsp:include>
-<h1>Error</h1>
-<!-- message is set by the servlet that calls this page -->
-<h2>${message}</h2>
-<a href="https://en.wikipedia.org/wiki/Matt_Groening">
-<img src="images/mistakesweremade.png" alt="Mistakes were made">
-</a>
+<h1>this is the feedback page</h1>
+
+
 </body>
 </html>

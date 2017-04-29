@@ -1,6 +1,19 @@
+/*
+ * The profile servlet is looks more complicated than it really is because
+ * it's combining multiple actions in one servlet
+ * The user comes to this servlet from another page or link from the site. They may 
+ * want to do one of three things.... 
+ *    1. view a profile for any user
+ *    2. edit their own profile
+ *    3. update their own profile 
+ *    
+ *    The difference between edit and update: after making changes to the form
+ *    from edit profile, they would click update to save the changes
+ */
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,45 +26,64 @@ import javax.servlet.http.HttpSession;
 public class ProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public ProfileServlet() {
-        super();
-    }
+	public ProfileServlet() {
+		super();
+	}
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	doPost(request,response);
-    }
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doPost(request,response);
+	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		/*
+		 * when the user clicks on a link to view a profile the link will contain 
+		 * the url of this servlet and the userid and action
+		 * For example:
+		 *  /ProfileServlet?userid=99&action=editProfile
+		 *  or
+		 *  /ProfileServlet?userid=99&action=updateProfile
+		 *  or
+		 *  /ProfileServlet?userid=99&action=viewProfile
+		 *  
+		 *  But we can't really trust the url so we check that the user in the session
+		 *  is the same user as is requesting an update or edit 
+		 */
 		HttpSession session = request.getSession();
 		String nextURL = "/error.jsp";
-		int userid = 0;
-		String action = "";
-		//create variables to hold the user who is logged in and the user for whom we are requesting a profile
-		User loggedInUser = null;
-		User profileUser = null;
-	
-		//get user out of session. If they don't exist then send them back to the login page.
-		//kill the session while you're at it.
+		//get user out of session. If they don't exist then go back to the login page.
 		if (session.getAttribute("user")==null){
 			//http://stackoverflow.com/questions/13638446/checking-servlet-session-attribute-value-in-jsp-file
 			nextURL = "/login.jsp";
-			session.invalidate();
 			response.sendRedirect(request.getContextPath() + nextURL);
-		    return;//return prevents an error; Don't believe me? Take it out.
+			return;//return prevents an error; Don't believe me? Take it out.
 		}
-		
-		try{
+
+		//get the userId from the request parameter
+		//Anything that comes in from getParameter is a String so we need to 
+		//convert it to an integer. In Java the term for converting something is "cast"
+		//so we cast the incoming request parameter for userid to an int
+		int userid = Integer.parseInt(request.getParameter("userid"));
+		String action = request.getParameter("action");
 		/*
 		 * simplify this so that it always requires two parameters, userid and action
-		 * action is view or edit. If edit then the userID of the session(user) must be same as userID for profile
-		 * since you can only edit your own.
-		 * all urls coming to this page must contain both parameters or get error.
+		 * action is 'view' or 'edit'. If edit then the userID of the session(user) must be same as userID for profile
+		 * since you can only edit your own profile.
+		 * all urls coming to this page must contain both parameters (userid and action) or get an error.
 		 */			
-		userid = Integer.parseInt(request.getParameter("userid"));
-		action = request.getParameter("action");//action is a hidden input on the form that gives us information
-			
+		User loggedInUser = (User) session.getAttribute("user");//<-- here we are casting to a User object
+		User profileUser = DbUser.getUserById(userid);
+		//REVIEW: What do we know at this point....
+		/* ONE: The logged in user came from the session. 
+		 * If they weren't in the session then the servlet would have sent them back
+		 * to the login page above.
+		 * TWO: The requesting url contained a parameter called userid which tells us which user's profile
+		 * is being requested.
+		 * THREE: We used the requested userid in TWO above to create the profile user. We'll need that in a 
+		 * minute to decide if profile.jsp should show in read-only mode or edit mode (with textboxes) 
+		 */
+
+
 		//update profile for user in request variable if action = updateprofile
-		if (request.getParameter("action").equals("updateprofile")){
+		if (action.equals("updateprofile")){
 			int uid = Integer.parseInt(request.getParameter("userid"));
 			String userEmail = request.getParameter("useremail");
 			String userMotto = request.getParameter("usermotto");
@@ -60,41 +92,32 @@ public class ProfileServlet extends HttpServlet {
 			updateUser.setEmail(userEmail);
 			DbUser.updateUser(updateUser);
 		}
-		
-		//get the user from the parameter
-		profileUser = DbUser.getUserByEmail(userEmail);
-    	//get the current user out of the session
-		loggedInUser = (User) session.getAttribute("user");		
-		
-		if (profileUser.getUserId()==loggedInUser.getUserId()){
+		///////////////////////////////////////////////////////////////////////////////
+
+		//if the loggedInUser is requesting their own profile
+		//then show profile.jsp in edit mode (ie... values in textboxes and a submit button)
+		if (loggedInUser.getUserId()==profileUser.getUserId()){
 			//display profile as form
 			//the session variable editProfile is used by the JSP to
 			//display the profile in edit mode
-			session.setAttribute("editProfile", true);
+			request.setAttribute("editProfile", true);
 		}else{
 			//display profile read-only
 			//the session variable editProfile is used by the JSP to
 			//display the profile in read-only mode
-			session.setAttribute("editProfile", false);
+			request.setAttribute("editProfile", false);
 		}
-		
-	    //populate the data in the attributes
-		int imgSize = 120;
-		SimpleDateFormat sdf = new SimpleDateFormat("MMM d, yyyy");
-		String joindate = sdf.format(profileUser.getJoinDate());
+
+		//in any event we need to populate the data on profile.jsp
+		//then set the values of the other attributes
+		//profile.jsp contains ${userid} to display the attribute for userid and so on ...
 		request.setAttribute("userid", profileUser.getUserId());
 		request.setAttribute("username", profileUser.getUsername());
 		request.setAttribute("useremail", profileUser.getEmail());
 		request.setAttribute("usermotto", profileUser.getMotto());
-		request.setAttribute("userjoindate", joindate);
 		nextURL = "/profile.jsp";
-		
-		
-		}catch(Exception e){
-			System.out.println(e);
-		}finally{
-			//redirect to next page as indicated by the value of the nextURL variable
-			getServletContext().getRequestDispatcher(nextURL).forward(request,response);
-		}
+
+		//redirect to next page as indicated by the value of the nextURL variable
+		getServletContext().getRequestDispatcher(nextURL).forward(request,response);
 	}
 }

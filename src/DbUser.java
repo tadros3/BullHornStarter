@@ -1,39 +1,60 @@
 
 public class DbUser {
-	public static User getUserById(int userID){
+	public static User getUserById(int userId){
 		User u = new User();
 		//populate the user object
-		u.userId = 100;
-		u.username = "Bart Simpson";
-		u.email = "bart@fox.net";
-		u.password = "blue123";
-		u.motto = "Don't have a cow, man!";
+
+		if (userId==100){
+			u.userId = 100;
+			u.username = "Bart Simpson";
+			u.email = "bart@fox.net";
+			u.password = "blue123";
+			u.motto = "Don't have a cow, man!";
+		}else if(userId==101){
+			u.userId = 101;
+			u.username = "Lisa Simpson";
+			u.email = "lisa@fox.net";
+			u.password = "blue123";
+			u.motto = "Mom! Bart's hitting me!";	
+		}else{
+			u.userId = 102;
+			u.username = "Homer Simpson";
+			u.email = "homer@fox.net";
+			u.password = "blue123";
+			u.motto = "mmmmm..... doughnuts!";
+		}
 		return u;
 	}
 	public static User getUserByEmail(String userEmail){
 		User u = new User();
 		//populate the user object
-		
+
 		if (userEmail.equals("bart@fox.net")){
 			u.userId = 100;
 			u.username = "Bart Simpson";
 			u.email = "bart@fox.net";
 			u.password = "blue123";
 			u.motto = "Don't have a cow, man!";	
-		}else{
+		}else if (userEmail.equals("lisa@fox.net")){
 			u.userId = 101;
 			u.username = "Lisa Simpson";
 			u.email = "lisa@fox.net";
 			u.password = "blue123";
-			u.motto = "Mom! Bart's annoying me!";
+			u.motto = "Mom! Bart's hitting me!";
+		}else{
+			u.userId = 102;
+			u.username = "Homer Simpson";
+			u.email = "homer@fox.net";
+			u.password = "blue123";
+			u.motto = "mmmmm..... doughnuts!";
 		}
-	
+
 		return u;
 	}
 	public static User addUser(String username, String userPassword, String userEmail, String userMotto){
 		User u = new User();
 		//populate the user object
-		u.userId = 101;
+		u.userId = 0;
 		u.username = username;
 		u.email = userEmail;
 		u.password = userPassword;
