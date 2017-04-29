@@ -24,15 +24,15 @@
 			<table border="1">
 				<tr>
 					<td>Name:</td>
-					<td><c:out value="${user.username}" /></td>
+					<td><c:out value="${username}" /></td>
 				</tr>
 				<tr>
 					<td>Email:</td>
-					<td><c:out value="${user.email}" /></td>
+					<td><c:out value="${email}" /></td>
 				</tr>
 				<tr>
 					<td>Motto:</td>
-					<td><c:out value="${user.motto}" /></td>
+					<td><c:out value="${motto}" /></td>
 				</tr>
 			</table>
 		</c:when>
@@ -41,20 +41,23 @@
 				<table border="1">
 					<tr>
 						<td>Name:</td>
-						<td><input type="text"
-							value="<c:out value="${user.username}"/>"></td>
+						<td><input type="text" name="username"
+							value="<c:out value="${username}"/>"></td>
 					</tr>
 					<tr>
 						<td>Email:</td>
-						<td><input type="text" value="<c:out value="${user.email}"/>"></td>
+						<td><input type="text" name="useremail" 
+						    value="<c:out value="${useremail}"/>"></td>
 					</tr>
 					<tr>
 						<td>Motto:</td>
-						<td><input type="text" value="<c:out value="${user.motto}"/>"></td>
+						<td><input type="text" name="usermotto"
+						     value="<c:out value="${usermotto}"/>"></td>
 					</tr>
 				</table>
-				<input type="hidden" name="action" value="update"> <input
-					type="submit" value="update">
+				<input type="hidden" name="userid" value="${userid}">
+				<input type="hidden" name="action" value="updateProfile">
+				 <input	type="submit" value="update">
 			</form>
 		</c:when>
 	</c:choose>

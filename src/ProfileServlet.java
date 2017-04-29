@@ -12,9 +12,6 @@
  */
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -70,7 +67,9 @@ public class ProfileServlet extends HttpServlet {
 		 * all urls coming to this page must contain both parameters (userid and action) or get an error.
 		 */			
 		User loggedInUser = (User) session.getAttribute("user");//<-- here we are casting to a User object
-		User profileUser = DbUser.getUserById(userid);
+		User profileUser = DbUser.getUserById(userid);//<-- we don't have to cast this time because we have a userId and the DbUser class knows what to do with a userId
+
+		
 		//REVIEW: What do we know at this point....
 		/* ONE: The logged in user came from the session. 
 		 * If they weren't in the session then the servlet would have sent them back
@@ -82,15 +81,13 @@ public class ProfileServlet extends HttpServlet {
 		 */
 
 
-		//update profile for user in request variable if action = updateprofile
-		if (action.equals("updateprofile")){
-			int uid = Integer.parseInt(request.getParameter("userid"));
+		//update profile in database for user in request variable if action = updateprofile
+		if (action.equals("updateProfile")){
 			String userEmail = request.getParameter("useremail");
 			String userMotto = request.getParameter("usermotto");
-			User updateUser = DbUser.getUserById(uid);
-			updateUser.setMotto(userMotto);
-			updateUser.setEmail(userEmail);
-			DbUser.updateUser(updateUser);
+			profileUser.setMotto(userMotto);
+			profileUser.setEmail(userEmail);
+			DbUser.updateUser(profileUser);
 		}
 		///////////////////////////////////////////////////////////////////////////////
 
@@ -101,22 +98,26 @@ public class ProfileServlet extends HttpServlet {
 			//the session variable editProfile is used by the JSP to
 			//display the profile in edit mode
 			request.setAttribute("editProfile", true);
+			request.setAttribute("userid", profileUser.getUserId());
+			request.setAttribute("username", profileUser.getUsername());
+			request.setAttribute("useremail", profileUser.getEmail());
+			request.setAttribute("usermotto", profileUser.getMotto());
 		}else{
 			//display profile read-only
 			//the session variable editProfile is used by the JSP to
 			//display the profile in read-only mode
 			request.setAttribute("editProfile", false);
+			request.setAttribute("userid", profileUser.getUserId());
+			request.setAttribute("username", profileUser.getUsername());
+			request.setAttribute("useremail", profileUser.getEmail());
+			request.setAttribute("usermotto", profileUser.getMotto());
 		}
 
 		//in any event we need to populate the data on profile.jsp
 		//then set the values of the other attributes
-		//profile.jsp contains ${userid} to display the attribute for userid and so on ...
-		request.setAttribute("userid", profileUser.getUserId());
-		request.setAttribute("username", profileUser.getUsername());
-		request.setAttribute("useremail", profileUser.getEmail());
-		request.setAttribute("usermotto", profileUser.getMotto());
-		nextURL = "/profile.jsp";
+		//profile.jsp contains ${user.username} to display the attribute for username and so on ...
 
+		nextURL = "/profile.jsp";
 		//redirect to next page as indicated by the value of the nextURL variable
 		getServletContext().getRequestDispatcher(nextURL).forward(request,response);
 	}

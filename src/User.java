@@ -1,7 +1,7 @@
 import java.util.Date;
 
 public class User {
-	long userId;
+	int userId;
 	String username;
 	String password;
 	String email;
@@ -10,10 +10,10 @@ public class User {
 	public User(){
 		
 	}
-	public long getUserId(){
+	public int getUserId(){
 		return userId;
 	}
-	public void setUserId(long userId){
+	public void setUserId(int userId){
 		//use the keyword this to refer to the class variable 
 		this.userId = userId;
 	}
