@@ -13,12 +13,11 @@ BullhornStarter then change the url below to match.
 git remote set-url origin https://<YOUR_GITHUB_USERNAME>@github.com/<YOUR_GITHUB_USERNAME>/BullhornStarter
 ```
 
-### Add the following lines of code back to the project to make it work again
-I created the complete application and tested it. So it was working. Then I decided to make your life difficult by removing the following lines of code from somewhere in the project. Each line of code is the complete line of code and I did not introduce any errors other than removing it from where it was and placing it below. 
+### Add the following blocks of code back to the project to make it work again
+I created the complete application and tested it. So it was working. Then I decided to make your day ~~difficult~~ fun by removing some blocks of code from somewhere in the project. Only I know where. And by tomorrow I'll have forgotten. 
 
-I created the application and tested it so I know it worked. Then I cut some code out of the application and pasted
-the cut code below. Now the application will no longer function. Can you help me?
-To get the application working again simply copy each line of code below back to where it came from. You will not need to write any new code. You only have to cut each block of code below and paste it back where it belongs.
+Each block of code below is the complete code that was removed. I did not introduce any errors other than removing it from where it was and placing it below. You will not need to write any new code. 
+You only have to cut each block of code below and paste it back where it belongs.
 
 ```java
 @WebServlet("/ProfileServlet")
