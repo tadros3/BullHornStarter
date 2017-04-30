@@ -9,7 +9,11 @@
 <body>
 <jsp:include page="navbar.jsp"></jsp:include>
 <h1>this is the newsfeed page</h1>
-<!-- I've hard coded one tweet here to show you what it might look like -->
+<!-- 
+I've hard coded three posts here to show you what this might look like. 
+The newsfeed servlet would be called to query the database and populate the
+posts into an arraylist which would be displayed in this JSP
+-->
 <table>
 <!-- each html table row starts with tr, each cell starts with td -->
 <tr>

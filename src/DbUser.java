@@ -54,7 +54,7 @@ public class DbUser {
 	public static User addUser(String username, String userPassword, String userEmail, String userMotto){
 		User u = new User();
 		//populate the user object
-		u.userId = 0;
+		u.userId = 103;
 		u.username = username;
 		u.email = userEmail;
 		u.password = userPassword;

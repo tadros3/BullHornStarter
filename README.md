@@ -1,5 +1,5 @@
 # Redirect from Servlet Example
-This example illustrates many of the concepts of a Java EE application. We still have not connected to the database yet but we'll do that soon. To account for the database I've created classes such as DbUser which will be modified to connect to the database.
+This example illustrates many of the concepts of a Java EE application. We still have not connected to the database yet but we'll do that soon. To account for the database I've created classes such as `DbUser` which will be modified to connect to the database. DbUser will not go away... it will be the class that calls the database.
 
 ### Use the following command to clone this project from GitHub
 
@@ -22,6 +22,7 @@ To get the application working again simply copy each line of code below back to
 
 ```java
 
+
 ```
 
 ### Review
@@ -35,7 +36,8 @@ To get the application working again simply copy each line of code below back to
 * when the data is sent from login.jsp to the web server what does the web server do next?
 * when is the login data (email and password) actually sent to the web server?
 * what data is sent to the web server?
-* write down the different methods that are executed (in order) once the user clicks "Login"*  when using JSTL (the Java Standard Tag Library) which page directive must you include at the top of the JSP page?
+* write down the different methods that are executed (in order) once the user clicks "Login"
+* when using JSTL (the Java Standard Tag Library) which page directive must you include at the top of the JSP page?
 * modify this application to add another JSP for adding a new user. Create the JSP, name it adduser.jsp. Add it to the login page. That way if a user finds the login page but hasn't joined the site they would click on the "New User" link and go to the adduser.jsp. When adduser.jsp opens the user will see a form prompting for their username, email, password and motto. Don't worry about making the form work yet. We'll get to that later.
 * Make the addUser.jsp work. Since we haven't added the database to the site yet you only have to create a servlet to receive the data for addUser.jsp. You should be able to do that by now. Use login.jsp to motivate you.
 
@@ -55,7 +57,16 @@ This servlet will receive the feedback from the form and store the values in var
   <input type="submit" value="Send Feedback">
 </form> 
 ```
-    <hr/>
+---
+Look at navbar.jsp. You will see several list items in the unordered list. Each is denoted with an `<li>` tag. 
+Modify each `<li>` tag to include a style attribute to display inline as follows:
+
+```html
+<li style="display: inline;">
+ ```
+ Notice how this changes the display of your unordered list when you refresh a page that uses the navbar.
+ 
+ ---
 The following code can be found in the ProfileServlet. You can put this code in any servlet that to ensure the user is logged in. Then if they are not they will be redirected to login.jsp. Make that modification now. BUt don't check the LoginServlet! They won't be logged in there!
 
 ```java
@@ -67,3 +78,16 @@ if (session.getAttribute("user")==null){
     return;//return prevents an error; Don't believe me? Take it out.
 }
  ```
+---
+Create the Newsfeed servlet. It will be called from the navbar. When the servlet is called it will go to the database and get all the posts as an arraylist. The arraylist will be sent to the newsfeed.jsp using `request.setAttribute("posts",posts)`.
+
+**Example Code**
+
+```java
+ArrayList<Post> posts = new ArrayList<Post>();
+//create a class called Post that contains email and text fields.
+Post p = new Post();
+p.setEmail("lisa@fox.net");
+p.setText("This is the text of my post");
+posts.add(p);
+```
