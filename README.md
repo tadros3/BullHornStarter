@@ -18,12 +18,41 @@ I created the complete application and tested it. So it was working. Then I deci
 
 I created the application and tested it so I know it worked. Then I cut some code out of the application and pasted
 the cut code below. Now the application will no longer function. Can you help me?
-To get the application working again simply copy each line of code below back to where it came from. You will not need to write any new code. You only have to cut each line of code below and paste it back where it belongs.
+To get the application working again simply copy each line of code below back to where it came from. You will not need to write any new code. You only have to cut each block of code below and paste it back where it belongs.
 
 ```java
-
-
+@WebServlet("/ProfileServlet")
 ```
+```html
+<li><a href="feedback.jsp">Feedback</a></li>
+```
+
+```java
+if(!action.isEmpty()||!(action==null)){
+    if (request.getParameter("action").toString().equals("logout")){
+        //Go back to login.jsp. 
+        nextPage = "/login.jsp";
+        response.sendRedirect(request.getContextPath() + nextPage);
+        return;//return here exits the method and prevents an error
+    }else{
+        nextPage = "/home.jsp";
+    }
+}
+```
+
+```java
+getServletContext().getRequestDispatcher(nextURL).forward(request,response);
+```
+
+```java
+public static boolean isValidUser(String email, String password) {
+    //at this point your code would query the database to see if this user
+    //and password are valid then return either true or false
+    //for the moment we'll assume they are valid
+    return true;
+}
+```
+
 
 ### Review
 #### By now you should have the application working again. Answer the following questions:
