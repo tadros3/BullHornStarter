@@ -1,18 +1,28 @@
 # Redirect from Servlet Example
 This example illustrates many of the concepts of a Java EE application. We still have not connected to the database yet but we'll do that soon. To account for the database I've created classes such as DbUser which will be modified to connect to the database.
 
-### Use the following commands to clone this project from GitHub
+### Use the following command to clone this project from GitHub
 
-
+```console
+git clone https://<YOUR_GITHUB_USERNAME>@github.com/dave45678/BullhornStarter
+```
 ### Use the following commands to modify the git configuaration 
+Be sure to create your own git repository. If you call it anything other than
+BullhornStarter then change the url below to match.
+```console
+git remote set-url origin https://<YOUR_GITHUB_USERNAME>@github.com/<YOUR_GITHUB_USERNAME>/BullhornStarter
+```
 
 ### Add the following lines of code back to the project to make it work again
-I created the complete application and tested it. So it was working. Then I decided to make your life difficult by removing the following lines of code from somewhere in the project. Each line of code is the complete line of code and I did not intruduce any errors other than removing it from where it was and placing it in the list below. 
+I created the complete application and tested it. So it was working. Then I decided to make your life difficult by removing the following lines of code from somewhere in the project. Each line of code is the complete line of code and I did not introduce any errors other than removing it from where it was and placing it below. 
+
 I created the application and tested it so I know it worked. Then I cut some code out of the application and pasted
 the cut code below. Now the application will no longer function. Can you help me?
 To get the application working again simply copy each line of code below back to where it came from. You will not need to write any new code. You only have to cut each line of code below and paste it back where it belongs.
 
+```java
 
+```
 
 ### Review
 #### By now you should have the application working again. Answer the following questions:
@@ -28,3 +38,32 @@ To get the application working again simply copy each line of code below back to
 * write down the different methods that are executed (in order) once the user clicks "Login"*  when using JSTL (the Java Standard Tag Library) which page directive must you include at the top of the JSP page?
 * modify this application to add another JSP for adding a new user. Create the JSP, name it adduser.jsp. Add it to the login page. That way if a user finds the login page but hasn't joined the site they would click on the "New User" link and go to the adduser.jsp. When adduser.jsp opens the user will see a form prompting for their username, email, password and motto. Don't worry about making the form work yet. We'll get to that later.
 * Make the addUser.jsp work. Since we haven't added the database to the site yet you only have to create a servlet to receive the data for addUser.jsp. You should be able to do that by now. Use login.jsp to motivate you.
+
+### Modifications
+Things you should do now...
+
+Modify feedback.jsp to contain the following form. Then modify this form to make it go to a servlet called Feedback.java. You will need to create the Feedback servlet.
+
+This servlet will receive the feedback from the form and store the values in variables. After we connect the database we will put the values of these variables in the database. So you should modify the doPost method of the FeedbackServlet to receive the data from this form and store it in Java variables.
+
+```html
+<form action="" method="post">
+  <input type="radio" name="subject" value="Question" checked> Question<br>
+  <input type="radio" name="subject" value="Complaint"> Complaint<br>
+  <input type="radio" name="subject" value="Comment"> Comment<br><br>
+  <textarea name="feedback" rows="6" cols="50"></textarea><br><br>
+  <input type="submit" value="Send Feedback">
+</form> 
+```
+    <hr/>
+The following code can be found in the ProfileServlet. You can put this code in any servlet that to ensure the user is logged in. Then if they are not they will be redirected to login.jsp. Make that modification now. BUt don't check the LoginServlet! They won't be logged in there!
+
+```java
+//make sure a user is in the session. If they don't exist then go back to the login page.
+if (session.getAttribute("user")==null){
+    //http://stackoverflow.com/questions/13638446/checking-servlet-session-attribute-value-in-jsp-file
+    nextURL = "/login.jsp";
+    response.sendRedirect(request.getContextPath() + nextURL);
+    return;//return prevents an error; Don't believe me? Take it out.
+}
+ ```

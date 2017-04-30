@@ -46,7 +46,8 @@ public class ProfileServlet extends HttpServlet {
 		 */
 		HttpSession session = request.getSession();
 		String nextURL = "/error.jsp";
-		//get user out of session. If they don't exist then go back to the login page.
+		
+		//make sure a user is in the session. If they don't exist then go back to the login page.
 		if (session.getAttribute("user")==null){
 			//http://stackoverflow.com/questions/13638446/checking-servlet-session-attribute-value-in-jsp-file
 			nextURL = "/login.jsp";
