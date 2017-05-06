@@ -10,12 +10,12 @@
 <h1>Login Page</h1>
 
 <form action="LoginServlet" method="post">
-	Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="email"><br/>
-	Password:&nbsp;<input type="password" name="password"><br/>
+	Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="email" value="bart@fox.net"><br/>
+	Password:&nbsp;<input type="password" name="password" value="1234"><br/>
 	<input type="hidden" name="action" value="login">
 	<input type="submit" value="Log In">
 </form>
 <p/>
-<a href="LoginServlet">Go directly to login servlet without logging in</a>
+<a href="LoginServlet">What happens if you go directly to login servlet without logging in?</a>
 </body>
 </html>

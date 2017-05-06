@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/ProfileServlet")
+
 public class ProfileServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -46,7 +46,8 @@ public class ProfileServlet extends HttpServlet {
 		 */
 		HttpSession session = request.getSession();
 		String nextURL = "/error.jsp";
-		//get user out of session. If they don't exist then go back to the login page.
+		
+		//make sure a user is in the session. If they don't exist then go back to the login page.
 		if (session.getAttribute("user")==null){
 			//http://stackoverflow.com/questions/13638446/checking-servlet-session-attribute-value-in-jsp-file
 			nextURL = "/login.jsp";
@@ -119,6 +120,6 @@ public class ProfileServlet extends HttpServlet {
 
 		nextURL = "/profile.jsp";
 		//redirect to next page as indicated by the value of the nextURL variable
-		getServletContext().getRequestDispatcher(nextURL).forward(request,response);
+
 	}
 }

@@ -54,7 +54,7 @@ public class DbUser {
 	public static User addUser(String username, String userPassword, String userEmail, String userMotto){
 		User u = new User();
 		//populate the user object
-		u.userId = 0;
+		u.userId = 103;
 		u.username = username;
 		u.email = userEmail;
 		u.password = userPassword;
@@ -67,10 +67,5 @@ public class DbUser {
 		//and return true if successful, false otherwise
 		return true;
 	}
-	public static boolean isValidUser(String email, String password) {
-		//at this point your code would query the database to see if this user
-		//and password are valid then return either true or false
-		//for the moment we'll assume they are valid
-		return true;
-	}
+
 }
