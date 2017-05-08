@@ -119,3 +119,288 @@ p.setEmail("lisa@fox.net");
 p.setText("This is the text of my post");
 posts.add(p);
 ```
+
+### How to create the tables in Oracle
+Run the included scripts. You'll find them in the SQLScripts folder
+
+### How to add JPA to the project
+* copy JAR files to /WEB-INF/lib 
+* add JAR files to the build path
+* right-click on project and select properties then Project Facets then JPA
+* modify persistence.xml
+* generate JPA entities from tables
+* create DbUtil in customTools package
+
+### How to check for a valid user in login servlet
+
+```java
+if (action.equals("logout")){
+	session.invalidate();
+	nextURL = "/login.jsp";
+	
+}else{
+	user = DbUser.getUserByEmail(useremail);
+	if (DbUser.isValidUser(user)){
+		session.setAttribute("user", user);
+		int size = 30;
+		String gravatarURL = DbUser.getGravatarURL(useremail, size);
+		System.out.println(gravatarURL);
+		session.setAttribute("gravatarURL", gravatarURL);
+		nextURL = "/home.jsp";
+	}else{
+		nextURL = "/login.jsp";
+	}
+	
+}
+```
+
+### Display the user's name and gravatar on the Home page
+
+
+### Create a form for the user to submit a post
+
+```java
+<form role="form" action="PostServ" method="post">
+    <div class="form-group">  
+       <label for="post">Create New Post (141 char):</label>
+       <textarea name= "posttext" id="posttext" class="form-control" rows="2" placeholder= "Express yourself!"></textarea>
+    </div> 
+    <div class = "form-group"> 
+       <input type="submit" value="Submit" id="submit"/>
+       <input type="reset" value="Clear"/>
+    </div>  
+</form> 
+```
+### Make the above form work
+Notice the form's action is PostServ. That means it goes to the servlet called PostServ. Since the method is Post you need to next add the following code to doPost() in the PostServ servlet.
+
+```java
+	Date postdate = new Date();
+		String posttext = request.getParameter("posttext");
+		String nextURL = "/error.jsp";
+		//need a reference to the session
+		//get user out of session. If they don't exist then send them back to the login page.
+		//kill the session while you're at it.
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user")==null){
+			//http://stackoverflow.com/questions/13638446/checking-servlet-session-attribute-value-in-jsp-file
+			nextURL = "/login.jsp";
+			session.invalidate();
+			response.sendRedirect(request.getContextPath() + nextURL);
+		    return;//return prevents an error
+		}
+		
+		//get user information from session so we can connect to the db
+		Bhuser user = (Bhuser)session.getAttribute("user");
+		
+		
+		//get  a populated bhuser object since we'll add that to the post
+		EntityManager em = DbUtil.getEmFactory().createEntityManager();
+		String query = "select u from Bhuser u where u.useremail=:email";
+		TypedQuery<Bhuser> q = em.createQuery(query,Bhuser.class);
+		q.setParameter("email",user.getUseremail());
+		
+		Bhuser bhUser = null;
+		try {
+			bhUser = q.getSingleResult();
+			System.out.println("The user id is: " + bhUser.getBhuserid());
+			nextURL = "/Newsfeed";
+		} catch (NoResultException e){
+			System.out.println(e);
+		} catch (NonUniqueResultException e){
+			System.out.println(e);
+		} finally {
+			em.close();
+		}
+		
+		//insert the post
+		Bhpost bhPost = new Bhpost();
+		bhPost.setBhuser(bhUser);
+		bhPost.setPostdate(postdate);
+		bhPost.setPosttext(posttext);
+		
+		DbBullhorn.insert(bhPost);
+		
+		//go to the newsfeed or error
+		getServletContext().getRequestDispatcher(nextURL).forward(request, response);
+```
+### How to limit a post to 141 characters
+ 
+Add the following attribute to the textarea on the form
+```java
+ maxlength="141"
+ ```
+ 
+### How to use JavaScript to show the number of remaining characters
+
+Add the following DIV tag below the textarea on the form. This will be changed by the JavaScript to display the number of remaining characters.
+
+```html
+<div id="textarea_feedback"></div>
+```
+
+Add the following script to the bottom of body on home.jsp. The script tags should end before the body and html tags end.
+
+```java
+<script>
+$(document).ready(function() {
+    var text_max = 141;
+    $('#textarea_feedback').html(text_max + ' characters remaining');
+
+    $('#posttext').keyup(function() {
+        var text_length = $('#posttext').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#textarea_feedback').html(text_remaining + ' characters remaining');
+    });
+});
+</script>
+```
+
+### How to add another function to ensure the user doesn't submit an empty post
+
+Modify the form tag as follows:
+
+```java
+<form role="form" action="PostServ" method="post" onsubmit="return validate(this);">
+```
+
+Add the following JavaScript function between the script tags at the bottom of the page:
+
+```java
+function validate(form) {
+	valid = true;
+	if ($('#posttext').val().length==0){
+		alert("You may not submit an empty post.");
+		valid = false;
+	}
+	return valid;
+}
+```		
+		            
+
+### The newsfeed servlet
+The newsfeed servlet displays all the posts. It can also display a filtered set of posts if it is called with the userid or searchtext parameters.
+
+```java
+		
+		long filterByUserID = 0; 
+		String searchtext = "";
+		
+		String nextURL = "/error.jsp";
+		//get user out of session. If they don't exist then send them back to the login page.
+		//kill the session while you're at it.
+		HttpSession session = request.getSession();
+		if (session.getAttribute("user")==null){
+			//http://stackoverflow.com/questions/13638446/checking-servlet-session-attribute-value-in-jsp-file
+			nextURL = "/login.jsp";
+			session.invalidate();
+			response.sendRedirect(request.getContextPath() + nextURL);
+		    return;//return prevents an error
+		}
+		
+		//get posts based on parameters; if no parameters then get all posts
+		List<Bhpost> posts = null;
+		if (request.getParameter("userid")!=null){
+			filterByUserID = Integer.parseInt(request.getParameter("userid"));
+			posts = DbBullhorn.postsofUser(filterByUserID);
+		}else if (request.getParameter("searchtext")!=null){
+			searchtext = request.getParameter("searchtext").toString();
+			posts = DbBullhorn.searchPosts(searchtext);
+		}else{
+			posts = DbBullhorn.bhPost();
+		}
+		
+		//add posts to session
+		session.setAttribute("posts", posts);
+		//display posts in newsfeed.jsp
+		nextURL = "/newsfeed.jsp";
+		//redirect to next page as indicated by the value of the nextURL variable
+		getServletContext().getRequestDispatcher(nextURL).forward(request,response);
+```
+
+### How to display a list of posts in the newsfeed.jsp page
+
+```html
+<div class="container">
+<table class="table table-bordered">
+    <thead>
+        <tr><th>User</th><th>Post</th><th>Date</th></tr>
+    </thead>
+    <tbody>
+    <c:forEach var="post" items="${posts}">
+        <tr><td><a href="ProfileServlet?action=viewprofile&userid=<c:out value="${post.bhuser.bhuserid}"/>"><c:out value="${post.bhuser.useremail}"/></a></td>
+        <td><c:out value="${post.posttext}"/></td>
+        <td><fmt:formatDate value="${post.postdate}" pattern="yy-MMM-dd"/></td>
+        </tr>
+    </c:forEach>
+    </tbody>
+    </table>
+
+</div>
+```
+
+
+### The completed NavBar
+
+```html
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <img src="images/bullhornlogo50x50.png" alt="Bullhorn Logo"/>&nbsp;<h2>Bullhorn</h2>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+ 
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="home.jsp">Home<span class="sr-only">(current)</span></a></li>
+        <li><a href="Newsfeed">News Feed</a></li>      
+      </ul>
+    
+      <form class="navbar-form navbar-right" role="search" action="Newsfeed" method="get">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Search" name="searchtext">
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    
+      <ul class="nav navbar-nav navbar-right">
+      <% if (session.getAttribute("user") != null) { %>
+        <li><a href="ProfileServlet?userid=${user.bhuserid}&action=viewprofile"><img alt="${user.username}" src="${gravatarURL}"/>&nbsp;${user.username}</a></li>
+      <% } %>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">User Options <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li>
+              <!-- <li><a href="LoginServlet?action=logout">Logout</a></li>-->
+              <!-- Bootstrap allows me to put a form here and it will show in the navbar.
+                   I want to use a form so it can call the servlet with the Post method.              
+               -->
+               <form class="navbar-form navbar-left" role="form" action="LoginServlet" method="post">
+                  <input type="hidden" name="action" id="action" value="logout"/>
+                  <button class="btn btn-default" id="addBookButton">Logout</button>        
+               </form>
+            </li>
+            <li><a href="Newsfeed?userid=${user.bhuserid }">Show my Posts</a></li>
+            <li><a href="ProfileServlet?userid=${user.bhuserid }&action=editprofile">Edit Profile</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="support.jsp">Feedback</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+```
+
+
+ 
+

@@ -2,7 +2,6 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
 
 
@@ -15,7 +14,8 @@ import java.util.Date;
 public class Bhuser implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private BigDecimal bhuserid;
+	@Id
+	private long bhuserid;
 
 	@Temporal(TemporalType.DATE)
 	private Date joindate;
@@ -31,11 +31,11 @@ public class Bhuser implements Serializable {
 	public Bhuser() {
 	}
 
-	public BigDecimal getBhuserid() {
+	public long getBhuserid() {
 		return this.bhuserid;
 	}
 
-	public void setBhuserid(BigDecimal bhuserid) {
+	public void setBhuserid(long bhuserid) {
 		this.bhuserid = bhuserid;
 	}
 
