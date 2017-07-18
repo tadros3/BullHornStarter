@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Output</title>
 </head>
 <body>
 <a href="HomeServlet">Go to Home Page</a>

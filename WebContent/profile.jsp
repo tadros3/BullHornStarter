@@ -9,6 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Profile</title>
+<jsp:include page="bootstrap.jsp"></jsp:include>
 </head>
 <body>
 	<jsp:include page="navbar.jsp"></jsp:include>
@@ -60,6 +61,36 @@
 			</form>
 		</c:when>
 	</c:choose>
+<form role="form" action="PostServlet" method="post">
+    <div class="form-group">  
+       <label for="post" id="charsLeft">Create New Post (141 char):</label>
+       <textarea name="posttext" id="posttext" class="form-control" rows="2" placeholder= "Express yourself!" maxlength="141"></textarea>
+    </div> 
+    <div class = "form-group"> 
+       <input type="submit" value="Submit" id="submit"/>
+       <input type="reset" value="Clear"/>
+    </div>  
+</form>
+<script>
+$(document).ready(function() {
+    var text_max = 141;
+    $('#charsLeft').html("Create New Post (" + text_max + " char):");
 
+    $('#posttext').keyup(function() {
+        var text_length = $('#posttext').val().length;
+        var text_remaining = text_max - text_length;
+
+        $('#charsLeft').html("Create New Post (" + text_remaining + " char):");
+    });
+});
+</script>
+<ul>
+	<c:forEach var="post" items="${userPosts}">
+		<li>
+			<c:out value="${post.posttext}"/><br>
+			<c:out value="${post.postdate}"/>
+		</li>
+	</c:forEach>
+</ul>
 </body>
 </html>

@@ -1,7 +1,7 @@
 
 
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -14,23 +14,38 @@ import javax.servlet.http.HttpSession;
 import customTools.DbPosts;
 import customTools.DbUser;
 
-@WebServlet("/LoginServlet")
-public class LoginServlet extends HttpServlet {
+/**
+ * Servlet implementation class SignupServlet
+ */
+@WebServlet("/SignupServlet")
+public class SignupServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public SignupServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
 
-	public LoginServlet() {
-		super();
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(request, response);
 	}
 
-
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) 
-			throws	ServletException, IOException {
-			doPost(request,response);
-	}
-
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+		String username = request.getParameter("username");
+		String motto = request.getParameter("motto");
 		String action = request.getParameter("action");
 		String nextPage = "/error.jsp";//someplace to go if things don't work
 		String message = "";
@@ -52,29 +67,25 @@ public class LoginServlet extends HttpServlet {
 		    }
 		}
 		
-
-			
+	
 		//putting a blank message just ensures I have a blank message.Since the message is set in the session
 		//it could still exist as the user navigates between pages so at the top of each page I should endure
 		//the message attribute contains nothing. Alternatively, I could just remove it if it exists.
 		session.setAttribute("message",message);
 
+		model.Bhuser newUser = new model.Bhuser();
+		newUser.setJoindate(new Date());
+		newUser.setMotto(motto);
+		newUser.setUseremail(email);
+		newUser.setUsername(username);
+		newUser.setUserpassword(password);
+		
+		DbUser.insert(newUser);
 		//Existential question: Does the user exist? Are they really who they say they are???
 		//And while you're at it... what is the meaning of life?
-		if (DbUser.isValidUser(email,password)){
-			//add the valid user to the session
-			session.setAttribute("user", DbUser.getUserByEmail(email));
-			nextPage = "/home.jsp";
-			List<model.Bhpost> posts = DbPosts.bhPost();
-			System.out.println(posts.toString());
-			session.setAttribute("posts", posts);
-			//System.out.println(session.getAttribute("posts").toString());
-		}else{
-			//probably not necessary but you can clear all session variables just to be sure nobody can access them 
-			session.invalidate();
-			//they put in the wrong password or don't exist in the database
-			nextPage = "/login.jsp";
-		}
+		message = "Welcome to Bullhorn!";
+		session.setAttribute("message", message);
+		session.setAttribute("user", DbUser.getUserByEmail(email));
 
 		//Your work here is done. Redirect to next page as indicated by the value of the nextURL variable
 		response.sendRedirect(request.getContextPath() + nextPage);

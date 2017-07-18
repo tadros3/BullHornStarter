@@ -1,5 +1,6 @@
 package customTools;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -61,7 +62,6 @@ public class DbPosts {
 		try{
 			TypedQuery<Bhpost> query = em.createQuery(qString,Bhpost.class);
 			posts = query.getResultList();
-
 		}catch (Exception e){
 			e.printStackTrace();
 		}

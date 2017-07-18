@@ -4,10 +4,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Search</title>
+<jsp:include page="bootstrap.jsp"></jsp:include>
 </head>
 <body>
 <jsp:include page="navbar.jsp"></jsp:include>
 <h1>this is the search page</h1>
+
+<form action="NewsfeedServlet" method="post">
+	Search by User ID<input type="text" name="userid" /><br>
+	Search by keyword<input type="text" name="searchtext" /><br>
+	<input type="hidden" name="action" value="search">
+	<input type="submit" value="Search">
+</form>
 </body>
 </html>

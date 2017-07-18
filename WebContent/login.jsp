@@ -5,16 +5,30 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Welcome to Bullhorn</title>
+<jsp:include page="bootstrap.jsp"></jsp:include>
 </head>
 <body>
-<h1>Login Page</h1>
+<div style="float:left;">
+<h1>Login</h1>
 
-<form action="LoginServlet" method="post">
-	Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="email" value="bart@fox.net"><br/>
-	Password:&nbsp;<input type="password" name="password" value="1234"><br/>
-	<input type="hidden" name="action" value="login">
-	<input type="submit" value="Log In">
-</form>
+	<form action="LoginServlet" method="post">
+		Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="email" value="larry12345@gmail.com"><br/>
+		Password:&nbsp;<input type="password" name="password" value="password"><br/>
+		<input type="hidden" name="action" value="login">
+		<input type="submit" value="Log In">
+	</form>
+</div>
+<div style="float:right;">
+<h1>Sign Up</h1>
+	<form action="SignupServlet" method="post">
+		Email:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="email"><br/>
+		Password:&nbsp;<input type="password" name="password"><br/>
+		Username:&nbsp;<input type="text" name="username"><br>
+		Motto:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="motto"><br>
+		<input type="hidden" name="action" value="login">
+		<input type="submit" value="Sign Up">
+	</form>
+</div>
 <p/>
 <a href="LoginServlet">What happens if you go directly to login servlet without logging in?</a>
 </body>
